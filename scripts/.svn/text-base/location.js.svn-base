@@ -1,0 +1,57 @@
+
+function success(position) {
+  
+
+  var location = position.coords.latitude + ',' + position.coords.longitude;
+
+localStorage.setItem('myTime',new Date().getTime())
+localStorage.setItem('myLon',position.coords.longitude)
+localStorage.setItem('myLat',position.coords.latitude)
+}
+ 
+function error(msg) {
+  // select the span with id status
+  var s = $('#status');
+  
+  // set the error message
+  s.html(typeof msg == 'string' ? msg : "failed");
+}
+ 
+
+if (navigator.geolocation) {
+var foo = navigator.geolocation.getCurrentPosition(success, error);
+} else {
+  error('not supported');
+}
+
+
+
+var url = "https://maps.googleapis.com/maps/api/timezone/json?location=" + localStorage.getItem('myLat') + "," + localStorage.getItem('myLon') + "&timestamp=" +localStorage.getItem('myTime')+"&sensor=true";
+var url2 = "http://api.geonames.org/timezoneJSON?lat=" + localStorage.getItem('myLat') + "&lng=" + localStorage.getItem('myLon') + "&username=mirhapp"
+
+  var timeZoneJson = (function () {
+    var timeZoneJson = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': url2,
+        'dataType': "json",
+        'success': function (data) {
+            timeZoneJson = data;
+        }
+    });
+    return timeZoneJson;
+})(); 
+
+
+  
+   var myTimesMethod = "ISNA"
+
+localStorage.setItem('timesMethod',myTimesMethod)
+  
+prayTimes.setMethod(localStorage.getItem('timesMethod')); 
+
+
+var getPrayTimes = prayTimes.getTimes(new Date(), [localStorage.getItem('myLat'), localStorage.getItem('myLon')], -timeZoneJson["rawOffset"]);
+   
+   console.log(getPrayTimes);

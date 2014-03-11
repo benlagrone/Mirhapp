@@ -1,0 +1,71 @@
+
+$(document).ready(function() {
+    //redraw("home")
+    
+    //drawButtons();
+    });
+
+function drawButtons(page){
+    var pageHtml = "";
+    if (page == "home"){
+        pageHtml += "<div class ='row'>";
+        for (var key in package["starter"]){
+            if (key % 2 === 0 ){
+                pageHtml += "<div class ='row'>";
+            }
+            //make home buttons
+            pageHtml += "<div class='span3'><div class='tile'>"
+            pageHtml += "<style>button[data-name='"+package["starter"][key]["image"]+"']{background:url(packages/starter/"+package["starter"][key]["image"]+".png)}</style>";
+            pageHtml += "<button data-name='"+ package["starter"][key]["image"] +"'>"
+            pageHtml += "<a class=''>" + package["starter"][key]["name"] + "</a></button></div></div>";
+            if (key % 2 != 0 ){
+                pageHtml += "</div>"
+            }
+        };   
+        pageHtml += "</div>";
+    }else{
+        for (var key in package["starter"]){
+            
+            if (package["starter"][key]["image"] == page){
+                pageHtml += "<div class='span3'><a data-name='home'>Home</a></div>";
+                pageHtml += "<style>button[data-name='large-"+package["starter"][key]["image"]+"']{background:url(packages/starter/"+package["starter"][key]["image"]+".png)}</style>"; 
+                pageHtml += "<button class='large' data-name='large-"+package["starter"][key]["image"]+"'>Show the Mirhab</button>"
+                pageHtml += "<article>" + package["starter"][key]["description"] + "<article>";
+                
+            }
+        }
+    }
+    
+    if(page.substring(0,5)=="large"){
+        pageHtml += "<div class='span3'><a data-name='home' class=''>Home</a></div>";
+    }
+
+    $("#page").append(pageHtml);
+    
+    $("a").click(function(){
+        
+        buttonClick($(this).data("name"))
+    })
+    
+    $("button").click(function(){
+        
+        buttonClick($(this).data("name"))
+    })
+};
+
+function buttonClick(buttonID){
+    if (buttonID == "home"){
+        
+    } else {
+        
+    };
+    $("#page").children().remove();
+    drawButtons(buttonID)
+    redraw(buttonID)
+}
+
+
+
+
+
+

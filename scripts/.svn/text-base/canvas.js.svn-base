@@ -1,0 +1,62 @@
+           
+var images = {}
+            
+loadImage("home-background","images/");
+            
+function loadImage(name,path){
+    images[name] = new Image();
+    images[name].onload = function(){
+        resourceLoaded()
+    }
+    images[name].src = path + name + ".png";
+}
+            
+var totalResources = 1;
+var numResourcesLoaded = 0;
+var fps = 30; 
+            
+function resourceLoaded(){
+    numResourcesLoaded +=1
+    if(numResourcesLoaded === totalResources){
+        //setInterval(redraw, 1000 / fps);
+        redraw("home");
+    }
+}
+
+var context = document.getElementById('canvas').getContext("2d");
+            
+var charX = 0;
+var charY = 0;
+            
+function redraw(page) {
+
+    var x = charX;
+    var y = charY;
+    canvas.width = canvas.width;
+            
+    //if(page.split("-")[0]!="large"){
+        context.drawImage(images["home-background"], x, y);
+    //};
+    
+    if(page.substring(0,5)=="large"){
+        loadImage(page.split("-")[1],"packages/starter/")
+        context.drawImage(images[page.split("-")[1]], x, y);
+    }
+            
+            
+    if (page != "home" && page.split("-")[0]!="large"){
+        drawRectangle();
+    }
+                       
+}
+function drawRectangle(){
+        context.beginPath();
+        context.rect(20, 600, 600, 470);
+        context.fillStyle = 'white';
+        context.fill();
+        context.lineWidth = 5;
+        context.strokeStyle = 'black';
+        context.stroke();
+    }
+    
+drawButtons("home");
